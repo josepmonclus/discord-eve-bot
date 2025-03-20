@@ -1,0 +1,8 @@
+{
+    "token": "XXXX",
+    "applicationId": "XXXX",
+
+    "testGuildId": "XXXX",
+
+    "adminUserIds": ["XXXX"]
+}
