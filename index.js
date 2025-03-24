@@ -1,9 +1,24 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
+const Sequelize = require('sequelize');
+
+const config = require('./config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+const db = require('./models')
+
+db.sequelize.query('PRAGMA foreign_keys = OFF;').then(() => {
+	db.sequelize.sync({ alter: true }).then(() => {
+		console.log('Base de datos sincronizada!')
+
+		db.sequelize.query('PRAGMA foreign_keys = ON;')
+	})
+})
+
+client.db = db
+client.config = config
 
 // Load commands from commands folder
 client.commands = new Collection();
@@ -41,4 +56,4 @@ for (const file of eventFiles) {
 }
 
 // Log in to Discord with your client's token
-client.login(token);
+client.login(config.token);

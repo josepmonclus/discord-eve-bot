@@ -19,6 +19,15 @@ module.exports = {
                     await interaction.reply({ content: 'There was an error while executing this command!', flags: MessageFlags.Ephemeral });
                 }
             }
+        } else if (interaction.isAutocomplete()) {
+            const command = interaction.client.commands.get(interaction.commandName);
+            if (!command || !command.autocomplete) return;
+
+            try {
+                await command.autocomplete(interaction);
+            } catch (error) {
+                console.error('Error in autocomplete:', error);
+            }
         } else if(interaction.isButton()) {
             const customId = interaction.customId;
     
